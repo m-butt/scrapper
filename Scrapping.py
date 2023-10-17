@@ -34,7 +34,7 @@ class Scrapper:
                 print(e)
                 print(
                     "\n\nWebsite blocked the request, trying again in 15 seconds")
-                sleep(15)  # sleep to avoid blocking
+                sleep(20)  # sleep to avoid blocking
                 os.system("clear")
                 webpage = urlopen(req).read()
         return webpage
