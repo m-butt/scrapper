@@ -12,12 +12,13 @@ import pathlib
 class CDW(Scrapper):
     def __init__(self):
         super().__init__()
-        self.Shop_By_Product = []
+        self.Shop_By_Product_apple_links = []
         self.CDW()
 
     def CDW(self):
         with requests.Session() as session:
             print("Now Scraping link: ", "iphone")
+            links_ = []
             Product = []
             Price = []
             Man_Number = []
@@ -32,5 +33,16 @@ class CDW(Scrapper):
                     # Extract text from h2 elements
                     for h2 in h2_elements:
                         if h2 is not None and h2.text.strip() == "Shop By Product":
-                            print("ok")
+                            links = outer_div.find_all('a', href=True)
+                            for link in links:
+                                links_.append(link['href'])
+            self.simple_link_generator(links_)
+    
+    def simple_link_generator(self,links):
+        for link in links:
+            full_link = "https://www.cdw.com" + link
+            self.Shop_By_Product_apple_links.append(full_link)
+        print(self.Shop_By_Product_apple_links)
+
+
 CDW()
