@@ -78,5 +78,5 @@ def get_searched_link(url,mnFID):
         print("Failed to fetch the page. Status Code:", response.status_code)
     
 
-
-get_searched_link("https://www.cdw.com/search/?key=","685C1UP#ABA")
+search_query = input("Enter MFG#: ")
+get_searched_link("https://www.cdw.com/search/?key=",search_query)
