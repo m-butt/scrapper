@@ -69,7 +69,7 @@ class CDW(Scrapper):
 
                         # Create a dictionary for each product
                         product_dict = {
-                            "name": product_name,
+                            "product_name": product_name,
                             "manufacturer_part_no": manufacturer_part_no,
                             "price": price,
                             # "specs": specs_dict
@@ -107,9 +107,10 @@ products_info_list = cdw_crawler.retrieve_saved_products_info()
 
 from saving_products import *
 connection = setup_connection_with_db()
-# for product in products_info_list:
-#     print(product)
-#     # save_products_info_to_db(connection, product)
+for product in products_info_list:
+    print(product)
+    save_products_info_to_db(connection, product)
+
 
 
 
