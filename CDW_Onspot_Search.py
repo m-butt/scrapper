@@ -73,7 +73,7 @@ def get_searched_link(url,mnFID):
             correct_url = link_concat(redirect_url)
             get_price(correct_url)
         else:
-            print("No redirect URL found.")
+            print("Record Not Found.")
     else:
         print("Failed to fetch the page. Status Code:", response.status_code)
     
