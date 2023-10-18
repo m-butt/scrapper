@@ -5,18 +5,18 @@ import os
 
 
 class Scrapper:
-    def __init__(self):
-        todays_date = date.today()
-        path = str(todays_date.year)
-        try:
-            os.mkdir(path)
-        except:
-            pass
+    def __init__(self,brands):
+        for i in brands:
+            try:
+                os.mkdir(i)
+            except:
+                pass
+        
 
     def req(self, link):
         req = Request(
             url=link,
-            headers={'User-Agent': 'Mozilla/5.0'})
+            headers={'User-Agent': 'Chrome/91.0.4472.124'})
         while (True):
             try:
                 webpage = urlopen(req).read()
