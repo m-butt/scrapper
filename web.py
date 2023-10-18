@@ -13,15 +13,16 @@ class CDW(Scrapper):
     def __init__(self):
         super().__init__()
         self.Shop_By_Product_apple_links = []
-        self.CDW()
+        self.products_information = []
+        # self.fetch_and_save_products_info_from_web()
 
-    def CDW(self):
+    def fetch_and_save_products_info_from_web(self):
         with requests.Session() as session:
             print("Now Scraping link: ", "Apple")
             links_ = []
             Product = []
             Price = []
-            Man_Number = []
+            Manf_Number = []
             webpage = self.req("https://www.cdw.com/content/cdw/en/brand/apple.html")
             soup = BeautifulSoup(webpage, 'html.parser')
             outer_div_elements = soup.find_all('div', class_='cdwgridlayout parbase section')
@@ -45,7 +46,7 @@ class CDW(Scrapper):
                 webpage = self.req(each_link)
                 soup = BeautifulSoup(webpage, 'html.parser')
                 outer_div_elements = soup.find_all('div', class_='search-result coupon-check')
-                product_data = []
+                # product_data = []
                 for outer_div in outer_div_elements:
                     each_product = outer_div.find('div', class_='grid-row')
                     each_product_detail = each_product.find_all('div', class_='columns-right grid-row col-6')
@@ -53,7 +54,7 @@ class CDW(Scrapper):
                 #     # Extract product details
                     for product_detail in each_product_detail:
                         product_name = product_detail.find('a', class_='search-result-product-url').text
-                        manufacturer_id = product_detail.find('span', class_='mfg-code').text.split(': ')[1]
+                        manufacturer_part_no = product_detail.find('span', class_='mfg-code').text.split(': ')[1]
                         price = product_detail.find('div', class_='price-type-price').text.strip()
                         specs_dict = {}
                         specs = product_detail.find('div', class_='expanded-specs')
@@ -69,20 +70,20 @@ class CDW(Scrapper):
                         # Create a dictionary for each product
                         product_dict = {
                             "name": product_name,
-                            "Munfuctureid": manufacturer_id,
+                            "manufacturer_part_no": manufacturer_part_no,
                             "price": price,
-                            "specs": specs_dict,
-                            "productimageurl": product_image_url
+                            # "specs": specs_dict
+                            # "product_image_url": product_image_url
                         }
                         # Append the product dictionary to the list
-                        product_data.append(product_dict)
-                
-                self.save_in_file(product_data)
-                exit()
-                
-                        
+                        self.products_information.append(product_dict)
+                print("Product information appended to list")
+                # self.save_in_file(self.products_information)
+                # exit()
+                return
 
-
+    def retrieve_saved_products_info(self):
+        return self.products_information
     
     def simple_link_generator(self,links):
         for link in links:
@@ -99,4 +100,17 @@ class CDW(Scrapper):
             # Write the product data to the CSV file
             writer.writerows(products)
 
-CDW()
+cdw_crawler = CDW()
+cdw_crawler.fetch_and_save_products_info_from_web()
+products_info_list = cdw_crawler.retrieve_saved_products_info()
+# print(len(products_info_list))
+
+from saving_products import *
+connection = setup_connection_with_db()
+# for product in products_info_list:
+#     print(product)
+#     # save_products_info_to_db(connection, product)
+
+
+
+
